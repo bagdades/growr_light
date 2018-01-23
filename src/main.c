@@ -28,14 +28,21 @@ const char ok[] PROGMEM = "ok\r\n";
 const char largeValue[] PROGMEM = "large value\r\n";
 const char start[] PROGMEM = "start\r\n";
 const char tempOut[] PROGMEM = "Temperature = ";
-char number[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+const char lightOut[] PROGMEM = "Light = ";
+char tempString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+char lightString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
 
 void TemperatureToUsart(void)
 {
-	UsartSendString(number);
+	UsartSendString(tempString);
 	UsartPutChar('\n');
 }
 
+void LightToUsart(void)
+{
+	UsartSendString(lightString);
+	UsartPutChar('\n');
+}
 
 void ParserHandler(uint8_t argc, char *argv[])
 {
@@ -51,10 +58,13 @@ void ParserHandler(uint8_t argc, char *argv[])
 			}
 		}	
 	}
-	if(ParserEqualString(argv[0], "Temp"))
-	{
+	if(ParserEqualString(argv[0], "Temp")) {
 		resp = tempOut;
 		SchedulerAddTask(TemperatureToUsart, 0, 0);
+	}
+	if(ParserEqualString(argv[0], "Light")) {
+		resp = lightOut;
+		SchedulerAddTask(LightToUsart, 0, 0);
 	}
 	UsartSendStringFlash(resp);
 }
@@ -71,10 +81,13 @@ void ListenUsart(void)
 void MeasureTemp(void)
 {
 	int16_t temperature;
+	int16_t lighting;
 	temperature = ADCRead(0);
 	temperature = ConvertADCTemp(temperature);
-	IntToString(temperature, number);
-	/* UsartSendString(number); */
+	IntToString(temperature, tempString);
+	lighting = ADCRead(1);
+	IntToString(lighting, lightString);
+	/* UsartSendString(tempString); */
 	/* UsartPutChar('\n'); */
 }
 

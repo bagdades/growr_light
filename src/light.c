@@ -61,8 +61,8 @@ void ADCInit(void)
 #if(F_CPU != 9216000)
 #error ***You must set TCCR0
 #endif
-	ADCSRA|=(1<<ADPS2)|(1<<ADPS1)|(1<<ADEN); //PRESC F_CPU/64
-	ADMUX|=ADC_VREF_TYPE; //intern. 2,56V
+	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADEN); //PRESC F_CPU/64
+	ADMUX |= ADC_VREF_TYPE; 
 }
 
 int16_t ADCRead(uint8_t chanel)

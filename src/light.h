@@ -9,7 +9,8 @@
 /* #define T0_FREQ		1000UL */
 /* #define T0_INIT		255 - (F_CPU/(T0_FREQ * T0_PRESC)) */
 
-#define ADC_VREF_TYPE ((1<<REFS1)|(1<<REFS0))
+/* #define ADC_VREF_TYPE ((1<<REFS1)|(1<<REFS0))   #<{(| Internal 2.56V |)}># */
+#define ADC_VREF_TYPE (1<<REFS0)                /* Voltage AVcc */
 
 //Prototypes
 void InitSystem(void);
