@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name esp-12_07v2_08v2-rescue-esp8266_dht22)(type Legacy)(uri ${KIPRJMOD}/lib/esp-12_07v2_08v2-rescue-esp8266_dht22.lib)(options "")(descr ""))
+  (lib (name maxim)(type Legacy)(uri ${KIPRJMOD}/lib/maxim.lib)(options "")(descr ""))
 )
