@@ -21,6 +21,7 @@
 #include "parser.h"
 #include "scheduler.h"
 #include <util/delay.h>
+#include <avr/eeprom.h>
 #include "twi.h"
 
 #define DS1307_ADR		0xD0
@@ -31,7 +32,21 @@ uint8_t hours;
 uint8_t setHour;
 uint8_t setMin;
 
-const char text[] PROGMEM = "Flash text proba.";
+uint8_t upperTimeHour = 6;
+uint8_t upperTimeMinute = 0;
+uint8_t lowerTimeHour = 21;
+uint8_t lowerTimeMinute = 0;
+uint8_t tempOff = 100;
+uint8_t lightOff = 20; //%
+
+uint8_t upperTimeHourEem EEMEM = 6;
+uint8_t upperTimeMinuteEem EEMEM = 0;
+uint8_t lowerTimeHourEem EEMEM = 21;
+uint8_t lowerTimeMinuteEem EEMEM = 0;
+uint8_t tempOffEem EEMEM = 100;
+uint8_t lightOffEem EEMEM = 20; //%
+
+const char text[] PROGMEM = "Light controll system.\n";
 const char error[] PROGMEM = "error\r\n";
 const char ok[] PROGMEM = "ok\r\n";
 const char largeValue[] PROGMEM = "large value\r\n";
@@ -39,7 +54,11 @@ const char start[] PROGMEM = "start\r\n";
 const char tempOut[] PROGMEM = "Temperature = ";
 const char lightOut[] PROGMEM = "Light = ";
 const char timeOut[] PROGMEM = "Time is: ";
-const char setTime[] PROGMEM = "Set time\n";
+const char setTime[] PROGMEM = "Setting time.\n";
+const char setLight[] PROGMEM = "Setting light.\n";
+const char setTempOff[] PROGMEM = "Setting temperature.\n";
+const char setUpperTime[] PROGMEM = "Setting upper time\n";
+const char setLowerTime[] PROGMEM = "Setting lower time\n";
 
 char tempString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
 char lightString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
@@ -89,20 +108,19 @@ void LightToUsart(void)
 	UsartPutChar('\n');
 }
 
+void SaveEepromSetting(void)
+{
+	eeprom_write_byte(&lightOffEem, lightOff);
+	eeprom_write_byte(&lowerTimeHourEem, lowerTimeHour);
+	eeprom_write_byte(&lowerTimeMinuteEem, lowerTimeMinute);
+	eeprom_write_byte(&tempOffEem, tempOff);
+	eeprom_write_byte(&upperTimeHourEem, upperTimeHour);
+	eeprom_write_byte(&upperTimeMinuteEem, upperTimeMinute);
+}
+
 void ParserHandler(uint8_t argc, char *argv[])
 {
 	const char *resp = error;
-	uint8_t value = 0;
-	if (ParserEqualString(argv[0], "Test")) {
-		if (argc > 1) {
-			value = ParserStringToUchar(argv[1]);
-			if (value < 100) {
-				resp = ok;
-			} else {
-				resp = largeValue;
-			}
-		}	
-	}
 	if(ParserEqualString(argv[0], "Temp")) {
 		resp = tempOut;
 		SchedulerAddTask(TemperatureToUsart, 0, 0);
@@ -123,6 +141,36 @@ void ParserHandler(uint8_t argc, char *argv[])
 		}
 		SchedulerAddTask(DS1307SetTime, 0, 0);
 	}
+	if(ParserEqualString(argv[0], "upperTime")) {
+		resp = setUpperTime;
+		if(argc > 2) {
+			upperTimeHour = ParserStringToUchar(argv[1]);
+			upperTimeMinute = ParserStringToUchar(argv[2]);
+		}
+		SchedulerAddTask(SaveEepromSetting, 3000, 0);
+	}
+	if(ParserEqualString(argv[0], "lowerTime")) {
+		resp = setLowerTime;
+		if(argc > 2) {
+			lowerTimeHour = ParserStringToUchar(argv[1]);
+			lowerTimeMinute = ParserStringToUchar(argv[2]);
+		}
+		SchedulerAddTask(SaveEepromSetting, 3000, 0);
+	}
+	if(ParserEqualString(argv[0], "SetLight")) {
+		resp = setLight;
+		if(argc > 1) {
+			lightOff = ParserStringToUchar(argv[1]);
+		}
+		SchedulerAddTask(SaveEepromSetting, 3000, 0);
+	}
+	if(ParserEqualString(argv[0], "cutTemp")) {
+		resp = setTempOff;
+		if(argc > 1) {
+			tempOff = ParserStringToUchar(argv[1]);
+		}
+		SchedulerAddTask(SaveEepromSetting, 3000, 0);
+	}
 	UsartSendStringFlash(resp);
 }
 
@@ -139,13 +187,21 @@ void MeasureTemp(void)
 {
 	int16_t temperature;
 	int16_t lighting;
-	temperature = ADCRead(0);
+	temperature = ADCRead(ADC_VREF_256, 0);
 	temperature = ConvertADCTemp(temperature);
 	IntToString(temperature, tempString);
-	lighting = ADCRead(1);
+	lighting = ADCRead(ADC_VREF_VCC, 1);
 	IntToString(lighting, lightString);
-	/* UsartSendString(tempString); */
-	/* UsartPutChar('\n'); */
+}
+
+void ReadEepromSetting(void)
+{
+	lightOff = eeprom_read_byte(&lightOffEem);
+	lowerTimeHour = eeprom_read_byte(&lowerTimeHourEem);
+	lowerTimeMinute = eeprom_read_byte(&lowerTimeMinuteEem);
+	tempOff = eeprom_read_byte(&tempOffEem);
+	upperTimeHour = eeprom_read_byte(&upperTimeHourEem);
+	upperTimeMinute = eeprom_read_byte(&upperTimeMinuteEem);
 }
 
 int main(void) {
@@ -154,8 +210,7 @@ int main(void) {
 	ADCInit();
 	TwiInit(100);
 	sei();
-	/* DS1307SetTime(); */
-	UsartSendString("Hello, World!\n");
+	ReadEepromSetting();
 	UsartSendStringFlash(text);
 	SchedulerAddTask(ListenUsart, 1, 10);
 	SchedulerAddTask(MeasureTemp, 100, 1000);

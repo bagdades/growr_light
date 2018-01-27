@@ -62,12 +62,12 @@ void ADCInit(void)
 #error ***You must set TCCR0
 #endif
 	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADEN); //PRESC F_CPU/64
-	ADMUX |= ADC_VREF_TYPE; 
+	/* ADMUX |= ADC_VREF_TYPE;  */
 }
 
-int16_t ADCRead(uint8_t chanel)
+int16_t ADCRead(uint8_t vref, uint8_t chanel)
 {
-	ADMUX = ADC_VREF_TYPE | chanel;
+	ADMUX = vref | chanel;
 		_delay_us(10);//delay needed for stabilization of the ACD input voltag
 	ADCSRA |= (1 << ADSC);//start convertion
 	while ((ADCSRA & (1 << ADIF)) == 0)

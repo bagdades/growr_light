@@ -33,12 +33,24 @@
 		<form action="" method="post">
 			<fieldset>
 				<legend> Межа зовнішнього <br>освітлення:</legend>
-				<input type="number" value="80" name="lightOff" id="lightOff" min="0" max="100"/>
+				<input type="range"  name="lightOff" id="lightOff" min="0" max="100"/>
+				<input type="submit" value="Встановити" name="" id=""/>
 			</fieldset>	
 		</form>
+		<form action="" method="" accept-charset="utf-8">
+			<fieldset id="встановлення_венхнього_і_нижнього_часових_меж." class="">
+				<legend>Встановлення венхньої і нижньої часових меж.</legend>
+				<input type="time" value="" name="upperTime" id="upperTime"/>
+				<input type="time" value="" name="lowerTime" id="lowerTime"/>
+				<input type="submit" value="Встановити" name="" id=""/>
+			</fieldset>
+		</form>
 		<form action="" method="post" accept-charset="utf-8">
-			Встановлення часу:
-			<input type="time" value="" name="usr_time" id="usr_time"/>
+			<fieldset id="" class="">
+				<legend>Встановлення поточного часу:</legend>
+				<input type="time" value="" name="usr_time" id="usr_time"/>
+				<input type="submit" value="Встановити" name="" id=""/>
+			</fieldset>
 		</form>
 	</body>
 </html>
