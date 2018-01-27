@@ -21,6 +21,15 @@
 #include "parser.h"
 #include "scheduler.h"
 #include <util/delay.h>
+#include "twi.h"
+
+#define DS1307_ADR		0xD0
+uint8_t ds1307Buffer[8];
+uint8_t seconds;
+uint8_t minutes;
+uint8_t hours;
+uint8_t setHour;
+uint8_t setMin;
 
 const char text[] PROGMEM = "Flash text proba.";
 const char error[] PROGMEM = "error\r\n";
@@ -29,8 +38,44 @@ const char largeValue[] PROGMEM = "large value\r\n";
 const char start[] PROGMEM = "start\r\n";
 const char tempOut[] PROGMEM = "Temperature = ";
 const char lightOut[] PROGMEM = "Light = ";
+const char timeOut[] PROGMEM = "Time is: ";
+const char setTime[] PROGMEM = "Set time\n";
+
 char tempString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
 char lightString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+
+void DS1307ReadTime(void)
+{
+	TwiWriteRegAddr(DS1307_ADR, 0);  /* Send pointer register */
+	TwiReadData(DS1307_ADR, 3);      /* Read three byte data */
+	TwiGetData(ds1307Buffer, 4);
+	seconds = ds1307Buffer[1];
+	minutes = ds1307Buffer[2];
+	hours = ds1307Buffer[3];
+}
+
+void DS1307SetTime(void)
+{
+	ds1307Buffer[0] = DS1307_ADR & 0xFE;
+	ds1307Buffer[1] = 0;
+	ds1307Buffer[2] = 0;
+	ds1307Buffer[3] = ((setMin / 10) << 4) | ((setMin % 10) & 0x0F);
+	ds1307Buffer[4] = ((setHour / 10) << 4) | ((setHour % 10) & 0x0F);
+	TwiSendData(ds1307Buffer, 5);
+}
+
+void TimeToUart(void)
+{
+	UsartPutChar((hours >> 4) + '0');
+	UsartPutChar((hours & 0x0F) + '0');
+	UsartPutChar(':');
+	UsartPutChar((minutes >> 4) + '0');
+	UsartPutChar((minutes & 0x0F) + '0');
+	UsartPutChar(':');
+	UsartPutChar((seconds >> 4) + '0');
+	UsartPutChar((seconds & 0x0F) + '0');
+	UsartPutChar('\n');
+}
 
 void TemperatureToUsart(void)
 {
@@ -66,6 +111,18 @@ void ParserHandler(uint8_t argc, char *argv[])
 		resp = lightOut;
 		SchedulerAddTask(LightToUsart, 0, 0);
 	}
+	if(ParserEqualString(argv[0], "Time")) {
+		resp = timeOut;
+		SchedulerAddTask(TimeToUart, 10, 0);
+	}
+	if(ParserEqualString(argv[0], "SetTime")) {
+		resp = setTime;
+		if(argc > 2) {
+			setHour = ParserStringToUchar(argv[1]);
+			setMin = ParserStringToUchar(argv[2]);
+		}
+		SchedulerAddTask(DS1307SetTime, 0, 0);
+	}
 	UsartSendStringFlash(resp);
 }
 
@@ -95,11 +152,14 @@ int main(void) {
 	UsartInit(9600);
 	SchedulerInit();
 	ADCInit();
+	TwiInit(100);
 	sei();
+	/* DS1307SetTime(); */
 	UsartSendString("Hello, World!\n");
 	UsartSendStringFlash(text);
 	SchedulerAddTask(ListenUsart, 1, 10);
 	SchedulerAddTask(MeasureTemp, 100, 1000);
+	SchedulerAddTask(DS1307ReadTime, 500, 500);
 	while(1) {
 		SchedulerDispatch();
 	}

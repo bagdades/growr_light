@@ -1,10 +1,12 @@
-syn keyword CTagsLocalVariable ch ubrrValue div temperature ii symbol zeroFlag i n value lighting sym retVal resp temp
+syn keyword CTagsLocalVariable ptr statusTwi temp i ch div retVal zeroFlag twbrValue value ii n temperature sym symbol ubrrValue lighting resp
 syn keyword CTagsStructure _task
-syn keyword CTagsMember period delay run pfunc
-syn keyword CTagsGlobalVariable txBufferTail parserBufferCount wordFlag usartRxBuffer lightString rxBufferTail tempString txBufferCount usartTxBuffer parserBuffer argv rxBufferCount rxBufferHead argc txBufferHead taskArray
-syn keyword CTagsConstant v1 c2 v2 c1 PROGMEM
+syn keyword CTagsMember pfunc run period delay
+syn keyword CTagsGlobalVariable setMin taskArray setHour argc seconds txBufferTail txBufferCount wordFlag ds1307Buffer twiMsgSize usartRxBuffer rxBufferCount parserBufferCount minutes prescl rxBufferHead usartTxBuffer tempString txBufferHead lightString twiState hours rxBufferTail parserBuffer argv twiBuffer
+syn keyword CTagsConstant c1 v2 c2 PROGMEM v1
 syn keyword CTagsEnumerationValue FALSE TRUE
-syn keyword CTagsFunction UsartSendStringFlash UsartGetChar ConvertTempADC pfunc ParserHandler TemperatureToUsart UsartSendString ADCInit IntToString ParserStringToUint ParserParse ParserEqualString ISR InitSystem main ParserInit SchedulerInit UsartGetRxCount UsartPutChar SchedulerAddTask ParserStringToUchar ListenUsart ConvertADCTemp ADCRead LightToUsart ParserEqualStringFlash UsartInit SchedulerDispatch SchedulerDeleteTask UsartFlushTxBuffer MeasureTemp
+syn keyword CTagsFunction UsartGetRxCount UsartSendStringFlash TwiWriteRegAddr ADCRead ListenUsart ConvertADCTemp InitSystem SchedulerAddTask IntToString LightToUsart ISR UsartInit ParserStringToUchar DS1307ReadTime TwiGetData SchedulerDispatch TemperatureToUsart TwiReadData UsartFlushTxBuffer UsartGetChar SchedulerDeleteTask UsartPutChar ParserStringToUint UsartSendString TimeToUart TwiInit TwiSendData ParserParse ParserHandler ParserEqualString ConvertTempADC ADCInit DS1307SetTime SchedulerInit pfunc
+syn keyword CTagsFunction ParserEqualStringFlash ParserInit TwiGetState TwiTransceiverBusy MeasureTemp main
 syn keyword CTagsType task
-syn keyword CTagsDefinedName USART_TX_BUFFER_SIZE ADC_VREF_TYPE PARSER_INC SIZE_RECEIVE_BUFFER MAXTASKS USART_BAUDRATE T0_PRESC T0_INIT USART_RX_BUFFER_SIZE SCHEDULER_INC AMOUNT_PAIR LIGHT_INC USART_BAUDRATE_DIV T0_FREQ USART_INC
+syn keyword CTagsDefinedName DS1307_ADR TWI_BUS_ERROR AMOUNT_PAIR T0_FREQ TWI_BUFFER_SIZE F_I2C TWI_NO_STATE TWI_INC SIZE_RECEIVE_BUFFER TWI_MTX_ADR_ACK TWBR_VALUE TWI_MRX_ADR_NACK SCHEDULER_INC USART_INC TWI_REP_START ADC_VREF_TYPE TWI_START LIGHT_INC MAXTASKS TWI_READ_BIT TWI_MRX_DATA_NACK USART_BAUDRATE_DIV N_ELEMENTS USART_BAUDRATE PARSER_INC TWI_SUCCESS TWI_MRX_DATA_ACK TWI_MRX_ADR_ACK T0_INIT TWI_MTX_DATA_ACK T0_PRESC TWI_MTX_ADR_NACK USART_TX_BUFFER_SIZE TWSR_MASK TWI_MTX_DATA_NACK TWI_ARB_LOST
+syn keyword CTagsDefinedName USART_RX_BUFFER_SIZE
 
