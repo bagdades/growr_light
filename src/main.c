@@ -270,8 +270,12 @@ void ReadEepromSetting(void)
 
 void LightControll(void)
 {
+	uint16_t currTimeHM = (currTimeHour << 8) + currTimeMinute;
+	uint16_t upperTimeHM = (upperTimeHour << 8) + upperTimeMinute;
+	uint16_t lowerTimeHM = (lowerTimeHour << 8) + lowerTimeMinute;
+
 	if (flagOn) {
-		if(currTimeHour >= upperTimeHour && currTimeHour <= lowerTimeHour && currTimeMinute >= upperTimeMinute && currTimeMinute <= lowerTimeMinute){
+		if(currTimeHM >= upperTimeHM && currTimeHM < lowerTimeHM){
 			if ((currLight < lightOff) || (currTemp > tempOff)) {
 				LightOff();
 			} else {

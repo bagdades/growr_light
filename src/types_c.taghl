@@ -1,4 +1,4 @@
-syn keyword CTagsLocalVariable value ptr ubrrValue resp ii symbol n zeroFlag ch sym div lighting temperature temp twbrValue retVal i statusTwi
+syn keyword CTagsLocalVariable ptr resp ch sym temperature twbrValue upperTimeHM currTimeHM lighting retVal lowerTimeHM i value ubrrValue ii temp statusTwi symbol zeroFlag n div
 syn keyword CTagsStructure _task
 syn keyword CTagsMember run delay period pfunc
 syn keyword CTagsGlobalVariable rxBufferCount upperTimeMinute usartTxBuffer lowerTimeMinute EEMEM txBufferCount setMin taskArray seconds setHour txBufferTail prescl currLight twiState usartRxBuffer minutes twiBuffer currTemp tempOff parserBuffer flagOn argv tempString twiMsgSize currTimeHour rxBufferHead lightOff lowerTimeHour upperTimeHour hours ds1307Buffer txBufferHead currTimeMinute argc wordFlag parserBufferCount rxBufferTail lightString setString
