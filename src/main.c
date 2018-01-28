@@ -25,6 +25,9 @@
 #include "twi.h"
 
 #define DS1307_ADR		0xD0
+
+uint8_t flagOn = TRUE;
+
 uint8_t ds1307Buffer[8];
 uint8_t seconds;
 uint8_t minutes;
@@ -32,11 +35,17 @@ uint8_t hours;
 uint8_t setHour;
 uint8_t setMin;
 
+uint8_t currLight;
+int16_t currTemp;
+uint8_t currTimeHour;
+uint8_t currTimeMinute;
+
+//Setting values
 uint8_t upperTimeHour = 6;
 uint8_t upperTimeMinute = 0;
 uint8_t lowerTimeHour = 21;
 uint8_t lowerTimeMinute = 0;
-uint8_t tempOff = 100;
+int8_t tempOff = 100;
 uint8_t lightOff = 20; //%
 
 uint8_t upperTimeHourEem EEMEM = 6;
@@ -59,9 +68,23 @@ const char setLight[] PROGMEM = "Setting light.\n";
 const char setTempOff[] PROGMEM = "Setting temperature.\n";
 const char setUpperTime[] PROGMEM = "Setting upper time\n";
 const char setLowerTime[] PROGMEM = "Setting lower time\n";
+const char helpText[] PROGMEM = "\nTemp - current temperature\n"
+									"Light - current light\n"
+									"Time - current time\n"
+									"SetTime hh mm\n"
+									"upperTime hh mm\n"
+									"lowerTime hh mm\n"
+									"SetLight xxx value 0 - 100\n"
+									"cutTemp xxx value 50 - 200\n"
+									"on - Light On\n"
+									"off - Light OFF\n";
+const char lightOn[] PROGMEM = "Light ON\n";
+const char lightOFF[] PROGMEM = "Light OFF\n";
+const char settings[] PROGMEM = "\nSettings:";
 
 char tempString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
 char lightString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+char setString[6] = {' ', ' ', ' ', '\0'};
 
 void DS1307ReadTime(void)
 {
@@ -71,6 +94,8 @@ void DS1307ReadTime(void)
 	seconds = ds1307Buffer[1];
 	minutes = ds1307Buffer[2];
 	hours = ds1307Buffer[3];
+	currTimeHour = ((hours >> 4) * 10) + (hours & 0x0F);
+	currTimeMinute = ((minutes >> 4) * 10 ) + (minutes & 0x0F);
 }
 
 void DS1307SetTime(void)
@@ -81,6 +106,29 @@ void DS1307SetTime(void)
 	ds1307Buffer[3] = ((setMin / 10) << 4) | ((setMin % 10) & 0x0F);
 	ds1307Buffer[4] = ((setHour / 10) << 4) | ((setHour % 10) & 0x0F);
 	TwiSendData(ds1307Buffer, 5);
+}
+
+void SettingsToUart(void)
+{
+	Uint8ToString(upperTimeHour, setString);
+	UsartSendString("\nupperTimeHour: ");
+	UsartSendString(setString);
+	Uint8ToString(upperTimeMinute, setString);
+	UsartSendString("\nupperTimeMinute: ");
+	UsartSendString(setString);
+	Uint8ToString(lowerTimeHour, setString);
+	UsartSendString("\nlowerTimeHour: ");
+	UsartSendString(setString);
+	Uint8ToString(lowerTimeMinute, setString);
+	UsartSendString("\nlowerTimeMinute: ");
+	UsartSendString(setString);
+	Uint8ToString(tempOff, setString);
+	UsartSendString("\ntempOff: ");
+	UsartSendString(setString);
+	Uint8ToString(lightOff, setString);
+	UsartSendString("\nlightOff: ");
+	UsartSendString(setString);
+	UsartPutChar('\n');
 }
 
 void TimeToUart(void)
@@ -171,6 +219,21 @@ void ParserHandler(uint8_t argc, char *argv[])
 		}
 		SchedulerAddTask(SaveEepromSetting, 3000, 0);
 	}
+	if (ParserEqualString(argv[0], "help")) {
+		resp = helpText;
+	}
+	if (ParserEqualString(argv[0], "on")) {
+		flagOn = TRUE;	
+		resp = lightOn;
+	}
+	if (ParserEqualString(argv[0], "off")) {
+		flagOn = FALSE;
+		resp = lightOFF;
+	}
+	if (ParserEqualString(argv[0], "Settings")) {
+		resp = settings;
+		SchedulerAddTask(SettingsToUart, 0, 0);
+	}
 	UsartSendStringFlash(resp);
 }
 
@@ -188,9 +251,10 @@ void MeasureTemp(void)
 	int16_t temperature;
 	int16_t lighting;
 	temperature = ADCRead(ADC_VREF_256, 0);
-	temperature = ConvertADCTemp(temperature);
-	IntToString(temperature, tempString);
+	currTemp = ConvertADCTemp(temperature);
+	IntToString(currTemp, tempString);
 	lighting = ADCRead(ADC_VREF_VCC, 1);
+	currLight = lighting / 10;
 	IntToString(lighting, lightString);
 }
 
@@ -204,17 +268,37 @@ void ReadEepromSetting(void)
 	upperTimeMinute = eeprom_read_byte(&upperTimeMinuteEem);
 }
 
+void LightControll(void)
+{
+	if (flagOn) {
+		if(currTimeHour >= upperTimeHour && currTimeHour <= lowerTimeHour && currTimeMinute >= upperTimeMinute && currTimeMinute <= lowerTimeMinute){
+			if ((currLight < lightOff) || (currTemp > tempOff)) {
+				LightOff();
+			} else {
+				LightOn();
+			}
+		} else {
+			LightOff();
+		}
+	} else {
+		LightOff();
+	}
+}
+
 int main(void) {
 	UsartInit(9600);
 	SchedulerInit();
 	ADCInit();
 	TwiInit(100);
+	InitSystem();
 	sei();
 	ReadEepromSetting();
 	UsartSendStringFlash(text);
+	UsartSendStringFlash(helpText);
 	SchedulerAddTask(ListenUsart, 1, 10);
 	SchedulerAddTask(MeasureTemp, 100, 1000);
 	SchedulerAddTask(DS1307ReadTime, 500, 500);
+	SchedulerAddTask(LightControll, 0, 100);
 	while(1) {
 		SchedulerDispatch();
 	}

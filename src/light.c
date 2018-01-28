@@ -30,7 +30,7 @@ static const float v2 = 154;   /* ADC value for hight temperature */
 
 void InitSystem(void)
 {
-
+	OUT_DDR |= (1 << OUT_PIN);  /* Port out */
 }
 
 void IntToString(int16_t value, char *strBuf)
@@ -47,6 +47,28 @@ void IntToString(int16_t value, char *strBuf)
 		temp = temp / div;
 		if(temp != 0 || zeroFlag)
 		{
+			strBuf[i] = temp + '0';
+			zeroFlag = 1;
+		}
+		temp = value % div;
+		div /= 10;
+	}
+	strBuf[i] = temp + '0';
+}
+
+void Uint8ToString(uint8_t value, char *strBuf)
+{
+	uint8_t i;
+	uint8_t temp = value;
+	uint8_t zeroFlag = 0;
+	uint8_t div = 100;
+
+	for (i = 0; i < 3; i++) {
+		strBuf[i] = ' ';     /*Fill space in buffer*/
+	}
+	for (i = 0; i < 2; i++) {
+		temp = temp / div;
+		if (temp != 0 || zeroFlag) {
 			strBuf[i] = temp + '0';
 			zeroFlag = 1;
 		}
