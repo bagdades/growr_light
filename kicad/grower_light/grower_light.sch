@@ -41,7 +41,7 @@ L Connector_Generic:Conn_01x06 J1
 U 1 1 5A678FDE
 P 7150 1300
 F 0 "J1" H 7230 1292 50  0000 L CNN
-F 1 "Conn_01x06" H 7230 1201 50  0000 L CNN
+F 1 "AVR_ISP" H 7230 1201 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 7150 1300 50  0001 C CNN
 F 3 "~" H 7150 1300 50  0001 C CNN
 	1    7150 1300
@@ -1074,4 +1074,21 @@ Wire Wire Line
 	8600 850  8600 950 
 Wire Wire Line
 	8450 850  8450 950 
+Text Label 3200 2200 0    50   ~ 0
+AVCC
+Text Label 7950 2750 0    50   ~ 0
+RES_ESP
+Text Label 3450 2500 2    50   ~ 0
+AREF
+$Comp
+L Connector_Generic:Conn_01x02 J6
+U 1 1 5A7114DD
+P 6250 4800
+F 0 "J6" H 6330 4792 50  0000 L CNN
+F 1 "Output" H 6330 4701 50  0000 L CNN
+F 2 "w_conn_screw:mors_2p" H 6250 4800 50  0001 C CNN
+F 3 "~" H 6250 4800 50  0001 C CNN
+	1    6250 4800
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
