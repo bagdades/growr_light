@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Home grower light settings</title>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" href="style.css">
+		<script type="text/javascript" src="settings.js"></script>
+	</head>
+
+	<body>
+
+		<header> Освітлення рослин </header>
+
+		<div class="main">
+			<div class="block-content">
+				<div class="b_title">Wi-Fi Options</div>
+				<div class="b_content">
+					<label>SSID:</label><input type="text" name="" value="" id="wifi_ssid" pattern="[^\s]{4,20}" required title="4 to 20 characters or digits">
+					<label>Password:</label><input id="wifi_pwd" type="password" value="" pattern="[^\s\*\/ ]{8,20}" required title="cron mask">
+					<div class="b_clear"></div>
+				</div>
+
+				<div class="b_title">Own Wi-Fi AP</div>
+				<div class="b_content">
+					<label>SSID:</label><input id="ap_ssid" type="text" value="" pattern="[^\s]{4,20}" required title="4 to 20 characters or digits">
+					<label>Password:</label><input id="ap_pwd" type="password" value="" pattern="[0-9\*\/ ]{9,20}" required title="cron mask">
+				</div>
+
+				<div class="b_clear"></div>
+				<button class="submit-btn" onclick="submit_cfg()">Save configuration</button>
+				<div class="b_clear"></div>
+			</div>	
+		</div>
+<script>
+  loadJSON('loadcfg', function(response) {
+    var json_obj = JSON.parse(response);
+	fill_fields(json_obj);
+  });
+</script>
+	</body>
+</html>

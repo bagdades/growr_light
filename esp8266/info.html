@@ -43,16 +43,16 @@
 		<form action="" method="" accept-charset="utf-8">
 			<fieldset id="встановлення_венхнього_і_нижнього_часових_меж." class="">
 				<legend>Встановлення венхньої і нижньої часових меж.</legend>
-				<input type="time" value="" name="upperTime" id="upperTime"/>
-				<input type="time" value="" name="lowerTime" id="lowerTime"/>
+				<input type="time" value="06:00" name="upperTime" id="upperTime"/>
+				<input type="time" value="21:00" name="lowerTime" id="lowerTime"/>
 				<input type="submit" value="Встановити" name="" id=""/>
 			</fieldset>
 		</form>
-		<form action="" method="post" accept-charset="utf-8">
+		<form action="" method="post" accept-charset="ISO-8859-1">
 			<fieldset id="" class="">
 				<legend>Встановлення поточного часу:</legend>
-				<input type="time" value="" name="usr_time" id="usr_time"/>
-				<input type="submit" value="Встановити" name="" id=""/>
+				<input type="time" value="10:10" name="mcu_do"/>
+				<input type="button" value="Встановити" onClick="SetTime" name="" id=""/>
 			</fieldset>
 		</form>
 	</body>
