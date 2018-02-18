@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Освітлення рослин</title>
 		<script type"text/javascript" src="index.js"> </script>
+		<script type"text/javascript" src="data.js"> </script>
+		<script type"text/javascript" src="date.format.js"> </script>
 		<link rel="stylesheet" href="style.css">
 		<link rel="icon" type="image/ico" href="favicon.ico" />
 	</head>
@@ -21,7 +23,7 @@
 			<div class="b_clear"></div>
 			<!-- <label style="display:inline">On/Off </label><div class="right" id="onOff"></div> -->
 			<label class="switch">
-				<input type="checkbox" id="onOff" onchange="switchChange()"/>
+				<input type="checkbox" id="onOff" value="" onchange="switchChange()"/>
 				<span class="slider round"></span>
 			</label><div class="right" id="onOffValue"></div>
 		</div>
@@ -29,30 +31,31 @@
 		<div class="block-content">
 			<div class="b_title">Аварійні параметри</div>
 			<div class="b_content">
-				<label>Температура виключення </label><input id="tempOff" type="range" min="50" max="250" onchange="changeVal(this.value, 'tempOffValue')"required></input>
+				<label>Температура виключення </label><input id="tempOff" type="range" value="" min="50" max="250" onchange="changeVal(this.value, 'tempOffValue')"required></input>
 				<div class="right" id="tempOffValue"></div>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_title">Режим роботи</div>
 			<div class="b_content">
-				<label>Рівень освітлення </label><input id="lightOff" type="range" min="0" max="100" onchange="changeVal(this.value, 'lightOffValue')"required></input>
+				<label>Рівень освітлення </label><input id="lightOff" type="range" value="" min="0" max="100" onchange="changeVal(this.value, 'lightOffValue')"required></input>
 				<div class="right" id="lightOffValue"></div>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_title">Час освітлення</div>
 			<div class="b_content">
-				<label>Ранок</label><input type="range"></input>
+				<label>Ранок</label><input type="time"></input>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_content">
-				<label>Вечір</label><input type="text"></input>
+				<label>Вечір</label><input type="time"></input>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_content">
-				<label>Поточний час</label><input type="text"></input>
+				<label>Поточний час</label>
+				<div id="currTime"></div>
 				<div class="b_clear"></div>
 			</div>
-			<button class="submit-btn" onclick="submit_cfg()">Save configuration</button>
+			<button class="submit-btn" onclick="submit_cfg_index()">Save configuration</button>
 			<div class="b_clear"></div>
 		</div>
 		<script charset="utf-8">
@@ -65,10 +68,14 @@
 			}
 			function switchChange(){
 				var x = document.getElementById("onOff").checked;
-				if(x)
+				if(x){
 					document.getElementById("onOffValue").innerHTML = "Light On";
-				else
+					document.getElementById("onOff").value = "Light On";
+				}
+				else {
 					document.getElementById("onOffValue").innerHTML = "Light Off";
+					document.getElementById("onOff").value = "Light Off";
+				}
 			}
 		</script>
 	</body>

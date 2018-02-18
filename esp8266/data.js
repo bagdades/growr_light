@@ -21,7 +21,8 @@ function refresh_info() {
     	var json_obj = JSON.parse(response);
 		document.getElementById("temperature").innerHTML = json_obj.data[0].T;
 		document.getElementById("light").innerHTML = json_obj.data[0].L;
-		document.getElementById("date").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"ddd mmm dd yyyy HH:MM:ss");
+		document.getElementById("currTime").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"ddd mmm dd yyyy HH:MM:ss");
+		// document.getElementById("currTime").innerHTML = json_obj.data[0].D
 	});
           
 	clearTimeout(timerID);

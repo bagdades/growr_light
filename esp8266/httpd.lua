@@ -70,7 +70,7 @@ function receive_http(sck, data)
     if admin_mode then
         if url_file == 'loadcfg' then
             sck:on("sent", function() sck:close() end)
-            local response = cgf_to_json(cfg)
+            local response = cgf_to_json()
             sck:send(response)
             request_OK = true
         end
@@ -84,7 +84,14 @@ function receive_http(sck, data)
 	else
         if url_file == 'loadcfg' then
             sck:on("sent", function() sck:close() end)
-            local response = cgf_to_json(cfg_index)
+            local response = cgf_to_json_index()
+            sck:send(response)
+            request_OK = true
+        end
+
+        if url_file == 'savecfg' then
+            sck:on("sent", function() sck:close() end)
+            local response = save_cfg_index(GET)
             sck:send(response)
             request_OK = true
         end
