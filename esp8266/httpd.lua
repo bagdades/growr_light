@@ -45,7 +45,7 @@ function receive_http(sck, data)
   if uri then
     for key, value in string.gmatch(uri, "([^=&]*)=([^&]*)") do
      GET[key]=value
-     --print(key, value)
+     print(key, value)
     end
   end
 
@@ -70,7 +70,7 @@ function receive_http(sck, data)
     if admin_mode then
         if url_file == 'loadcfg' then
             sck:on("sent", function() sck:close() end)
-            local response = cgf_to_json()
+            local response = cgf_to_json(cfg)
             sck:send(response)
             request_OK = true
         end
@@ -78,6 +78,13 @@ function receive_http(sck, data)
         if url_file == 'savecfg' then
             sck:on("sent", function() sck:close() end)
             local response = save_cfg(GET)
+            sck:send(response)
+            request_OK = true
+        end
+	else
+        if url_file == 'loadcfg' then
+            sck:on("sent", function() sck:close() end)
+            local response = cgf_to_json(cfg_index)
             sck:send(response)
             request_OK = true
         end
@@ -95,6 +102,12 @@ function receive_http(sck, data)
             request_OK = true
         end
     end
+	if url_file == 'now' then
+		sck:on("sent", function() sck:close() end)
+		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "D":'..device_data.D..'}]}'
+		sck:send(response)
+		request_OK = true
+	end
   end
 
   if request_OK == false then

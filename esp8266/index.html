@@ -4,14 +4,72 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Освітлення рослин</title>
+		<script type"text/javascript" src="index.js"> </script>
 		<link rel="stylesheet" href="style.css">
+		<link rel="icon" type="image/ico" href="favicon.ico" />
 	</head>
 	<body>
 		<header> Освітлення рослин </header>
-		<div class="main">
-			<div class="block-content">
-				<div class="b_title"> Поточні покази </div>
-			</div>
+		<div class="block-content">
+			<div class="b_title"> Поточні покази </div>
+			<div class="b_clear"></div>
+			<label style="display:inline">Температура приладу, C </label><div class="right" id="temperature"></div>
+			<div class="b_clear"></div>
+			<label style="display:inline">Рівень зовніш. освітлення </label><div class="right" id="light"></div>
+			<div class="b_clear"></div>
+			<label style="display:inline">Поточний час </label><div class="right" id="date"></div>
+			<div class="b_clear"></div>
+			<!-- <label style="display:inline">On/Off </label><div class="right" id="onOff"></div> -->
+			<label class="switch">
+				<input type="checkbox" id="onOff" onchange="switchChange()"/>
+				<span class="slider round"></span>
+			</label><div class="right" id="onOffValue"></div>
 		</div>
+		<header> Налаштування </header>
+		<div class="block-content">
+			<div class="b_title">Аварійні параметри</div>
+			<div class="b_content">
+				<label>Температура виключення </label><input id="tempOff" type="range" min="50" max="250" onchange="changeVal(this.value, 'tempOffValue')"required></input>
+				<div class="right" id="tempOffValue"></div>
+				<div class="b_clear"></div>
+			</div>
+			<div class="b_title">Режим роботи</div>
+			<div class="b_content">
+				<label>Рівень освітлення </label><input id="lightOff" type="range" min="0" max="100" onchange="changeVal(this.value, 'lightOffValue')"required></input>
+				<div class="right" id="lightOffValue"></div>
+				<div class="b_clear"></div>
+			</div>
+			<div class="b_title">Час освітлення</div>
+			<div class="b_content">
+				<label>Ранок</label><input type="range"></input>
+				<div class="b_clear"></div>
+			</div>
+			<div class="b_content">
+				<label>Вечір</label><input type="text"></input>
+				<div class="b_clear"></div>
+			</div>
+			<div class="b_content">
+				<label>Поточний час</label><input type="text"></input>
+				<div class="b_clear"></div>
+			</div>
+			<button class="submit-btn" onclick="submit_cfg()">Save configuration</button>
+			<div class="b_clear"></div>
+		</div>
+		<script charset="utf-8">
+			loadJSON('loadcfg', function(response) {
+				var json_obj = JSON.parse(response);
+				fill_fields(json_obj);
+			});
+			function changeVal(val, idval) {
+				document.getElementById(idval).innerHTML = val;
+			}
+			function switchChange(){
+				var x = document.getElementById("onOff").checked;
+				if(x)
+					document.getElementById("onOffValue").innerHTML = "Light On";
+				else
+					document.getElementById("onOffValue").innerHTML = "Light Off";
+			}
+		</script>
 	</body>
 </html>

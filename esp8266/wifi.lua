@@ -11,7 +11,7 @@ ap_cfg.pwd = cfg.ap_pwd
 wifi.ap.config(ap_cfg)
 ap_cfg = nil
 
-tmr.register(3, 600000, tmr.ALARM_AUTO, function()
+tmr.register(3, 60000, tmr.ALARM_AUTO, function()
 	wifi.setmode(wifi.STATION)
 end)
 tmr.start(3)

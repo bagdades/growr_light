@@ -1,8 +1,8 @@
 dofile("cfg.lua")
 
-function cgf_to_json()
+function cgf_to_json(cfg_table)
   local json = '{"cfg":[{';  
-  for key,value in pairs(cfg) do
+  for key,value in pairs(cfg_table) do
     json = json..'"'..key..'":"'..value..'",';
   end
   json = string.sub(json, 0, -2)..'}]}';
