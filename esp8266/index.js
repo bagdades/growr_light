@@ -1,4 +1,4 @@
-params_index = ['tempOff','lightOff', 'onOff']
+params_index = ['tempOff','lightOff', 'onOff', 'time_upper', 'time_lower'];
 
 function loadJSON(json_url, callback) {
     var xobj = new XMLHttpRequest();
@@ -24,7 +24,9 @@ function fill_fields(json_obj) {
 		}
 	}
 	ele = document.getElementById(params_index[i] + 'Value');
-	ele.innerHTML = json_obj.cfg_index[0][params_index[i]];
+	if (ele) {
+		ele.innerHTML = json_obj.cfg_index[0][params_index[i]];
+	}
   }
 }
 

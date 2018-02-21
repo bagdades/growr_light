@@ -6,7 +6,7 @@
 		<title>Освітлення рослин</title>
 		<script type"text/javascript" src="index.js"> </script>
 		<script type"text/javascript" src="data.js"> </script>
-		<script type"text/javascript" src="date.format.js"> </script>
+		<!-- <script type"text/javascript" src="date.format.js"> </script> -->
 		<link rel="stylesheet" href="style.css">
 		<link rel="icon" type="image/ico" href="favicon.ico" />
 	</head>
@@ -43,16 +43,15 @@
 			</div>
 			<div class="b_title">Час освітлення</div>
 			<div class="b_content">
-				<label>Ранок</label><input type="time"></input>
+				<label>Ранок</label><input id="time_upper" type="time" value=""></input>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_content">
-				<label>Вечір</label><input type="time"></input>
+				<label>Ранок</label><input id="time_lower" type="time" value=""></input>
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_content">
-				<label>Поточний час</label>
-				<div id="currTime"></div>
+				<label style="display:inline">Поточний час</label> <div class="right" id="currTime"></div>
 				<div class="b_clear"></div>
 			</div>
 			<button class="submit-btn" onclick="submit_cfg_index()">Save configuration</button>

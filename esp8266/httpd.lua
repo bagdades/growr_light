@@ -8,6 +8,7 @@ function decodeURI(s)
     return s
 end
 
+
 function receive_http(sck, data)
   -- sendfile class
   local sendfile = {}
@@ -111,7 +112,8 @@ function receive_http(sck, data)
     end
 	if url_file == 'now' then
 		sck:on("sent", function() sck:close() end)
-		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "D":'..device_data.D..'}]}'
+		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "Dh":'..device_data.Dh..', "Dm":'..device_data.Dm..'}]}'
+		print(response)
 		sck:send(response)
 		request_OK = true
 	end

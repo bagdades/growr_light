@@ -21,8 +21,13 @@ function refresh_info() {
     	var json_obj = JSON.parse(response);
 		document.getElementById("temperature").innerHTML = json_obj.data[0].T;
 		document.getElementById("light").innerHTML = json_obj.data[0].L;
-		document.getElementById("currTime").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"ddd mmm dd yyyy HH:MM:ss");
-		// document.getElementById("currTime").innerHTML = json_obj.data[0].D
+		// document.getElementById("currTime").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"HH:MM:ss");
+		var min = json_obj.data[0].Dm;
+		if (min < 10) {
+			document.getElementById("currTime").innerHTML = json_obj.data[0].Dh + ':' + '0' + min;
+		} else {
+			document.getElementById("currTime").innerHTML = json_obj.data[0].Dh + ':' + min;
+		}
 	});
           
 	clearTimeout(timerID);
