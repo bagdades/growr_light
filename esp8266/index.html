@@ -68,12 +68,22 @@
 			function switchChange(){
 				var x = document.getElementById("onOff").checked;
 				if(x){
-					document.getElementById("onOffValue").innerHTML = "Light On";
-					document.getElementById("onOff").value = "Light On";
+					loadJSON('onlight', function(response){
+						var json_obj = JSON.parse(response);
+						if(json_obj.resp == 'Ok'){
+							document.getElementById("onOffValue").innerHTML = "Light On";
+							document.getElementById("onOff").value = "Light On";
+						}
+					});
 				}
 				else {
-					document.getElementById("onOffValue").innerHTML = "Light Off";
-					document.getElementById("onOff").value = "Light Off";
+					loadJSON('offlight', function(response){
+						var json_obj = JSON.parse(response);
+						if(json_obj.resp == 'Ok'){
+							document.getElementById("onOffValue").innerHTML = "Light Off";
+							document.getElementById("onOff").value = "Light Off";
+						}
+					});
 				}
 			}
 		</script>

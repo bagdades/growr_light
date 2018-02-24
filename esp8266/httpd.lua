@@ -96,6 +96,20 @@ function receive_http(sck, data)
             sck:send(response)
             request_OK = true
         end
+		if url_file == 'onlight' then
+			sck:on("sent", function() sck:close() end)
+			gpio.write(output_pin, gpio.HIGH)
+			local response = '{"resp":"Ok"}'
+			sck:send(response)
+			request_OK = true
+		end
+		if url_file == 'offlight' then
+			sck:on("sent", function() sck:close() end)
+			gpio.write(output_pin, gpio.LOW)
+			local response = '{"resp":"Ok"}'
+			sck:send(response)
+			request_OK = true
+		end
     end
   
     local fext=url_file:match("^.+(%..+)$")
@@ -113,7 +127,6 @@ function receive_http(sck, data)
 	if url_file == 'now' then
 		sck:on("sent", function() sck:close() end)
 		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "Dh":'..device_data.Dh..', "Dm":'..device_data.Dm..'}]}'
-		print(response)
 		sck:send(response)
 		request_OK = true
 	end

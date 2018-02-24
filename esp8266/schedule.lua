@@ -9,6 +9,5 @@ else
 	end
 	device_data.Dh = timeZone
 	device_data.Dm = tm["min"]
-	print(device_data.D)
 end
 collectgarbage()
