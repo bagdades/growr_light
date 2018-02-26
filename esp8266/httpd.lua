@@ -100,6 +100,7 @@ function receive_http(sck, data)
 			sck:on("sent", function() sck:close() end)
 			gpio.write(output_pin, gpio.HIGH)
 			local response = '{"resp":"Ok"}'
+			cfg_index.onOff = 'Light On'
 			sck:send(response)
 			request_OK = true
 		end
@@ -107,6 +108,7 @@ function receive_http(sck, data)
 			sck:on("sent", function() sck:close() end)
 			gpio.write(output_pin, gpio.LOW)
 			local response = '{"resp":"Ok"}'
+			cfg_index.onOff = 'Light Off'
 			sck:send(response)
 			request_OK = true
 		end

@@ -93,129 +93,26 @@ footer {
   height: 3px;
 }
 
+#light, #temperature, #pressure, #humidity {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4991BC;
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
 label {
   display: block;
   margin-top:10px;
 }
-/* Intro */
-.intro {
-  background: #4991BC;
-  text-align: center;
-  width: 100%;
-  height: 100vh;
-  position: relative;
+canvas {
+	position: relative;
+	float: right;
+	height: 34px;
+	width: 60px;
+	border: 1px solid black;
 }
 
-.intro .container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 60px;
-}
-
-.intro .overlay {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 10;
-  color: #FFF;
-  display: table;
-}
-
-.intro .overlay .inner {
-  height: 100%;
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.intro .items-wrapper {
-  width: 220px;
-  height: 220px;
-  position: relative;
-  margin: auto;
-}
-
-.intro .overlay h1 {
-  margin: 0;
-}
-
-.intro .item,
-.intro .item svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.intro .item svg {
-  visibility: hidden;
-}
-
-.intro .item svg.drawsvg-initialized {
-  visibility: visible;
-}
-
-.intro .item {
-  -webkit-transition: 0.6s;
-          transition: 0.6s;
-  opacity: 0;
-  -webkit-transform: translate3d(0, 30px, 0);
-      -ms-transform: translate3d(0, 30px, 0);
-       -o-transform: translate3d(0, 30px, 0);
-          transform: translate3d(0, 30px, 0);
-}
-
-@-webkit-keyframes comeIn {
-  from {
-    -webkit-transform: translate3d(0, -30px, 0);
-            transform: translate3d(0, -30px, 0);
-  }
-  to {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-
-@-o-keyframes comeIn {
-  from {
-    -o-transform: translate3d(0, -30px, 0);
-       transform: translate3d(0, -30px, 0);
-  }
-  to {
-    -o-transform: translate3d(0, 0, 0);
-       transform: translate3d(0, 0, 0);
-  }
-}
-
-@-moz-keyframes comeIn {
-  from {
-    transform: translate3d(0, -30px, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes comeIn {
-  from {
-    transform: translate3d(0, -30px, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.intro .item.active {
-  opacity: 1;
-  -webkit-animation: comeIn 0.6s forwards;
-          animation: comeIn 0.6s forwards;
-}
-
-.intro .item svg {
-  margin: auto;
-}
 .switch {
   position: relative;
   display: inline-block;

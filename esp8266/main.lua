@@ -4,17 +4,24 @@ dofile("wifi.lua")
 --Global variables
 device_data = {T = 100, L = 85, Dh = 11, Dm = 02}
 
+--Init ADC
+if adc.force_init_mode(adc.INIT_ADC) then
+	node.restart()
+	return
+end
+
+--Set gpio for measure adc two channel
+gpio.mode(5, gpio.OUTPUT)
+gpio.mode(6, gpio.OUTPUT)
+
+--Init output
 output_pin = 1
 gpio.mode(output_pin, gpio.OUTPUT)
--- gpio.serout(output_pin, gpio.HIGH, {20000, 995000}, 100, 1)
--- gpio.write(output_pin, gpio.HIGH)
 if cfg_index.onOff == 'Light On' then
 	gpio.write(output_pin, gpio.HIGH)
 else
 	gpio.write(output_pin, gpio.LOW)
 end
-
-dofile("read_data.lua")
 
 -- Sheduler
 rtctime.set(1436430589, 0)

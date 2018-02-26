@@ -17,15 +17,15 @@
 			<div class="b_clear"></div>
 			<label style="display:inline">Температура приладу, C </label><div class="right" id="temperature"></div>
 			<div class="b_clear"></div>
-			<label style="display:inline">Рівень зовніш. освітлення </label><div class="right" id="light"></div>
+			<label style="display:inline">Рівень зовніш. освітлення, % </label><div class="right" id="light"></div>
 			<div class="b_clear"></div>
-			<label style="display:inline">Поточний час </label><div class="right" id="date"></div>
+			<label style="display:inline">Стан роботи </label>
 			<div class="b_clear"></div>
 			<!-- <label style="display:inline">On/Off </label><div class="right" id="onOff"></div> -->
 			<label class="switch">
 				<input type="checkbox" id="onOff" value="" onchange="switchChange()"/>
 				<span class="slider round"></span>
-			</label><div class="right" id="onOffValue"></div>
+			</label><canvas id="onOffValue"></canvas>
 		</div>
 		<header> Налаштування </header>
 		<div class="block-content">
@@ -71,8 +71,12 @@
 					loadJSON('onlight', function(response){
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
-							document.getElementById("onOffValue").innerHTML = "Light On";
+							// document.getElementById("onOffValue").innerHTML = "Light On";
 							document.getElementById("onOff").value = "Light On";
+							var c = document.getElementById("onOffValue");
+							var ctx = c.getContext("2d");
+							ctx.fillStyle = "#FF0000";
+							ctx.fillRect(0, 0, 300, 170);
 						}
 					});
 				}
@@ -80,8 +84,12 @@
 					loadJSON('offlight', function(response){
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
-							document.getElementById("onOffValue").innerHTML = "Light Off";
+							// document.getElementById("onOffValue").innerHTML = "Light Off";
 							document.getElementById("onOff").value = "Light Off";
+							var c = document.getElementById("onOffValue");
+							var ctx = c.getContext("2d");
+							ctx.fillStyle = "#637B85";
+							ctx.fillRect(0, 0, 300, 170);
 						}
 					});
 				}
