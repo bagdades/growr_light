@@ -71,12 +71,7 @@
 					loadJSON('onlight', function(response){
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
-							// document.getElementById("onOffValue").innerHTML = "Light On";
 							document.getElementById("onOff").value = "Light On";
-							var c = document.getElementById("onOffValue");
-							var ctx = c.getContext("2d");
-							ctx.fillStyle = "#FF0000";
-							ctx.fillRect(0, 0, 300, 170);
 						}
 					});
 				}
@@ -84,12 +79,7 @@
 					loadJSON('offlight', function(response){
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
-							// document.getElementById("onOffValue").innerHTML = "Light Off";
 							document.getElementById("onOff").value = "Light Off";
-							var c = document.getElementById("onOffValue");
-							var ctx = c.getContext("2d");
-							ctx.fillStyle = "#637B85";
-							ctx.fillRect(0, 0, 300, 170);
 						}
 					});
 				}

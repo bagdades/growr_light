@@ -98,7 +98,6 @@ function receive_http(sck, data)
         end
 		if url_file == 'onlight' then
 			sck:on("sent", function() sck:close() end)
-			gpio.write(output_pin, gpio.HIGH)
 			local response = '{"resp":"Ok"}'
 			cfg_index.onOff = 'Light On'
 			sck:send(response)
@@ -106,7 +105,6 @@ function receive_http(sck, data)
 		end
 		if url_file == 'offlight' then
 			sck:on("sent", function() sck:close() end)
-			gpio.write(output_pin, gpio.LOW)
 			local response = '{"resp":"Ok"}'
 			cfg_index.onOff = 'Light Off'
 			sck:send(response)
@@ -128,7 +126,7 @@ function receive_http(sck, data)
     end
 	if url_file == 'now' then
 		sck:on("sent", function() sck:close() end)
-		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "Dh":'..device_data.Dh..', "Dm":'..device_data.Dm..'}]}'
+		local response = '{"data":[{"T":'..device_data.T..',"L":'..device_data.L..', "Dh":'..device_data.Dh..', "Dm":'..device_data.Dm..',"S":'..device_data.S..'}]}'
 		sck:send(response)
 		request_OK = true
 	end

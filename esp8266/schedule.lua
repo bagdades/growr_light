@@ -37,9 +37,10 @@ function MeassureLight()
 	gpio.write(5, gpio.HIGH)
 	gpio.write(6, gpio.LOW)
 	local valueADC = adc.read(0)
+	print(valueADC)
 	valueADC = valueADC / 10
 	local tempLigt = valueADC > 100 and 100 or valueADC
-	tempLigt = (1 / tempLigt) * 100
+	tempLigt = 100 - tempLigt
 	return string.format('%d',tempLigt)
 end
 
@@ -48,4 +49,11 @@ end
 device_data.L = MeassureLight()
 print(device_data.L)
 
+if cfg_index.onOff == "Light On" and tonumber(device_data.L) < cfg_index.lightOff then
+	gpio.write(output_pin, gpio.HIGH)
+	device_data.S = 1
+else 
+	gpio.write(output_pin, gpio.LOW)
+	device_data.S = 0
+end
 collectgarbage()

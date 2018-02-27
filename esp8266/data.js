@@ -21,6 +21,14 @@ function refresh_info() {
     	var json_obj = JSON.parse(response);
 		document.getElementById("temperature").innerHTML = json_obj.data[0].T;
 		document.getElementById("light").innerHTML = json_obj.data[0].L;
+		var c = document.getElementById("onOffValue");
+		var ctx = c.getContext("2d");
+		if (json_obj.data[0].S == 0) {
+			ctx.fillStyle = "#637B85";
+		} else {
+			ctx.fillStyle = "#FF0000";
+		}
+			ctx.fillRect(0, 0, 300, 170);
 		// document.getElementById("currTime").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"HH:MM:ss");
 		var min = json_obj.data[0].Dm;
 		if (min < 10) {
@@ -31,5 +39,5 @@ function refresh_info() {
 	});
           
 	clearTimeout(timerID);
-	timerID = setTimeout("refresh_info()",60000);
+	timerID = setTimeout("refresh_info()",15000);
 }
