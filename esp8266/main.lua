@@ -10,18 +10,23 @@ if adc.force_init_mode(adc.INIT_ADC) then
 	return
 end
 
---Set gpio for measure adc two channel
-gpio.mode(5, gpio.OUTPUT)
-gpio.mode(6, gpio.OUTPUT)
+--Set gpio for LED
+gpio.mode(4, gpio.OUTPUT)
+if cfg_index.onOff == 'Light On' then
+	gpio.write(4, gpio.HIGH)
+else
+	gpio.write(4, gpio.LOW)
+end
+
+--Constants
+MLP = 7
+MTP = 2
+MT = 5
+ML = 6
 
 --Init output
 output_pin = 1
 gpio.mode(output_pin, gpio.OUTPUT)
-if cfg_index.onOff == 'Light On' then
-	gpio.write(output_pin, gpio.HIGH)
-else
-	gpio.write(output_pin, gpio.LOW)
-end
 
 -- Sheduler
 rtctime.set(1436430589, 0)

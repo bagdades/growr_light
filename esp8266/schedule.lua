@@ -13,7 +13,7 @@ end
 
 
 local C1 = 23    -- Lower temperature 
-local V1 = 778   -- ADC value for lower temperature 
+local V1 = 769   -- ADC value for lower temperature 
 local C2 = 280   -- Hight temperature 
 local V2 = 349   -- ADC value for hight temperature 
 
@@ -25,17 +25,24 @@ function ConvertADCTemp(value_adc)
 end
 
 function MeassureTemp()
-	--Meassure temperature
-	gpio.write(6, gpio.HIGH)
-	gpio.write(5, gpio.LOW)
+	gpio.mode(MTP, gpio.OUTPUT)
+	gpio.mode(MT, gpio.OUTPUT)
+	gpio.mode(MLP, gpio.INPUT)
+	gpio.mode(ML, gpio.INPUT)
+	gpio.write(MTP, gpio.HIGH)
+	gpio.write(MT, gpio.LOW)
 	local valueADC = adc.read(0)
+	print(valueADC)
 	return ConvertADCTemp(valueADC)
 end
 
 function MeassureLight()
-	--Measure light
-	gpio.write(5, gpio.HIGH)
-	gpio.write(6, gpio.LOW)
+	gpio.mode(MLP, gpio.OUTPUT)
+	gpio.mode(ML, gpio.OUTPUT)
+	gpio.mode(MTP, gpio.INPUT)
+	gpio.mode(MT, gpio.INPUT)
+	gpio.write(MLP, gpio.HIGH)
+	gpio.write(ML, gpio.LOW)
 	local valueADC = adc.read(0)
 	print(valueADC)
 	valueADC = valueADC / 10
@@ -44,16 +51,29 @@ function MeassureLight()
 	return string.format('%d',tempLigt)
 end
 
--- device_data.T = MeassureTemp()
+device_data.T = MeassureTemp()
+print(device_data.T)
 
 device_data.L = MeassureLight()
 print(device_data.L)
 
-if cfg_index.onOff == "Light On" and tonumber(device_data.L) < cfg_index.lightOff then
-	gpio.write(output_pin, gpio.HIGH)
-	device_data.S = 1
-else 
-	gpio.write(output_pin, gpio.LOW)
-	device_data.S = 0
+function controllLiht()
+	local uTime = string.sub(cfg_index.time_upper, 1, 2) .. string.sub(cfg_index.time_upper, 4, 5)
+	uTime = tonumber(uTime)
+	local lTime = string.sub(cfg_index.time_lower, 1, 2) .. string.sub(cfg_index.time_lower, 4, 5)
+	lTime = tonumber(lTime)
+	local curTime = (device_data.Dh * 100) + device_data.Dm
+	local curTemp = tonumber(device_data.T)
+	if cfg_index.onOff == "Light On" and tonumber(device_data.L) < cfg_index.lightOff 
+		and curTime > uTime and curTime < lTime and curTemp < cfg_index.tempOff then
+		gpio.write(output_pin, gpio.HIGH)
+		device_data.S = 1
+	else 
+		gpio.write(output_pin, gpio.LOW)
+		device_data.S = 0
+	end
 end
+
+controllLiht()
+
 collectgarbage()

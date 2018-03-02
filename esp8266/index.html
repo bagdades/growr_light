@@ -19,6 +19,8 @@
 			<div class="b_clear"></div>
 			<label style="display:inline">Рівень зовніш. освітлення, % </label><div class="right" id="light"></div>
 			<div class="b_clear"></div>
+			<label style="display:inline">Поточний час</label> <div class="right" id="currTime"></div>
+			<div class="b_clear"></div>
 			<label style="display:inline">Стан роботи </label>
 			<div class="b_clear"></div>
 			<!-- <label style="display:inline">On/Off </label><div class="right" id="onOff"></div> -->
@@ -47,11 +49,7 @@
 				<div class="b_clear"></div>
 			</div>
 			<div class="b_content">
-				<label>Ранок</label><input id="time_lower" type="time" value=""></input>
-				<div class="b_clear"></div>
-			</div>
-			<div class="b_content">
-				<label style="display:inline">Поточний час</label> <div class="right" id="currTime"></div>
+				<label>Вечір</label><input id="time_lower" type="time" value=""></input>
 				<div class="b_clear"></div>
 			</div>
 			<button class="submit-btn" onclick="submit_cfg_index()">Save configuration</button>
@@ -72,6 +70,7 @@
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
 							document.getElementById("onOff").value = "Light On";
+							refresh_info();
 						}
 					});
 				}
@@ -80,6 +79,7 @@
 						var json_obj = JSON.parse(response);
 						if(json_obj.resp == 'Ok'){
 							document.getElementById("onOff").value = "Light Off";
+							refresh_info();
 						}
 					});
 				}

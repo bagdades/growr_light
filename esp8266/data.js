@@ -15,7 +15,6 @@ function loadJSON(json_url, callback) {
 
 var timerID = setTimeout("refresh_info()",100);
 
-// Refresh current data
 function refresh_info() {
 	loadJSON(json_url_now, function(response) {
     	var json_obj = JSON.parse(response);
@@ -29,7 +28,6 @@ function refresh_info() {
 			ctx.fillStyle = "#FF0000";
 		}
 			ctx.fillRect(0, 0, 300, 170);
-		// document.getElementById("currTime").innerHTML = dateFormat(new Date(json_obj.data[0].D*1000),"HH:MM:ss");
 		var min = json_obj.data[0].Dm;
 		if (min < 10) {
 			document.getElementById("currTime").innerHTML = json_obj.data[0].Dh + ':' + '0' + min;

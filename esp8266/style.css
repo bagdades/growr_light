@@ -93,7 +93,7 @@ footer {
   height: 3px;
 }
 
-#light, #temperature, #pressure, #humidity {
+#light, #temperature, #pressure, #humidity, #currTime {
   font-size: 1.5em;
   font-weight: bold;
   color: #4991BC;
