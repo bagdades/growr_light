@@ -64,7 +64,8 @@ function controllLiht()
 	lTime = tonumber(lTime)
 	local curTime = (device_data.Dh * 100) + device_data.Dm
 	local curTemp = tonumber(device_data.T)
-	if cfg_index.onOff == "Light On" and tonumber(device_data.L) < cfg_index.lightOff 
+	local curLight = tonumber(device_data.L)
+	if cfg_index.onOff == "Light On" and curLight < cfg_index.lightOff 
 		and curTime > uTime and curTime < lTime and curTemp < cfg_index.tempOff then
 		gpio.write(output_pin, gpio.HIGH)
 		device_data.S = 1
