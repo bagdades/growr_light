@@ -1,3 +1,5 @@
 (fp_lib_table
   (lib (name lib)(type KiCad)(uri "$(KIPRJMOD)/lib")(options "")(descr ""))
+  (lib (name w_conn_screw)(type KiCad)(uri "$(KISYSMOD)/w_conn_screw.pretty")(options "")(descr ""))
+  (lib (name w_switch)(type KiCad)(uri "$(KISYSMOD)/w_switch.pretty")(options "")(descr ""))
 )
