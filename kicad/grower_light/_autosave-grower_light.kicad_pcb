@@ -3,7 +3,7 @@
   (general
     (thickness 1.6)
     (drawings 9)
-    (tracks 269)
+    (tracks 273)
     (zones 0)
     (modules 34)
     (nets 31)
@@ -29,7 +29,7 @@
     (45 Margin user)
     (46 B.CrtYd user)
     (47 F.CrtYd user)
-    (48 B.Fab user hide)
+    (48 B.Fab user)
     (49 F.Fab user)
   )
 
@@ -1636,9 +1636,13 @@
 
   (segment (start 147.275 114.985) (end 148.689213 114.985) (width 0.4) (layer B.Cu) (net 0))
   (segment (start 148.689213 114.985) (end 154.285 114.985) (width 0.4) (layer B.Cu) (net 0))
+  (segment (start 148.535 119.308) (end 151.108 119.308) (width 0.4) (layer B.Cu) (net 1))
+  (segment (start 151.108 119.308) (end 151.27099 119.47099) (width 0.4) (layer B.Cu) (net 1))
+  (segment (start 151.27099 119.47099) (end 155.83701 119.47099) (width 0.4) (layer B.Cu) (net 1))
+  (segment (start 155.83701 119.47099) (end 156 119.308) (width 0.4) (layer B.Cu) (net 1))
+  (segment (start 156 119.308) (end 158.75 119.308) (width 0.4) (layer B.Cu) (net 1))
   (segment (start 158.75 119.308) (end 181.555 119.308) (width 0.4) (layer B.Cu) (net 1))
   (segment (start 158.75 117.475) (end 158.75 118.818502) (width 0.4) (layer B.Cu) (net 1))
-  (segment (start 148.535 119.308) (end 158.75 119.308) (width 0.4) (layer B.Cu) (net 1))
   (segment (start 158.75 118.818502) (end 158.75 119.308) (width 0.4) (layer B.Cu) (net 1))
   (segment (start 181.555 119.308) (end 181.625 119.238) (width 0.4) (layer B.Cu) (net 1))
   (segment (start 181.625 119.238) (end 181.625 116.585) (width 0.4) (layer B.Cu) (net 1))
