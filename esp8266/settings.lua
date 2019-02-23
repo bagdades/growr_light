@@ -50,3 +50,5 @@ function save_cfg_index(GET)
   dofile("cfgindex.lua");
   return "Configuration is saved.";
 end
+
+collectgarbage()

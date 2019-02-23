@@ -39,3 +39,5 @@ end)
 --Start HTTP 'server'
 dofile("httpd.lua")
 print('Ready')
+
+collectgarbage()

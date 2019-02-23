@@ -12,8 +12,8 @@ else
 end
 
 
-local C1 = 23    -- Lower temperature 
-local V1 = 769   -- ADC value for lower temperature 
+local C1 = 20    -- Lower temperature 
+local V1 = 792   -- ADC value for lower temperature 
 local C2 = 280   -- Hight temperature 
 local V2 = 349   -- ADC value for hight temperature 
 
